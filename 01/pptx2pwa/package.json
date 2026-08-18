@@ -1,0 +1,18 @@
+{
+  "name": "slides-to-pwa",
+  "version": "1.0.0",
+  "description": "Convert a PPTX or a text brief into an HTML/PWA landing page using your own Claude API key.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^2.0.0",
+    "adm-zip": "^0.5.10",
+    "archiver": "^7.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slides → PWA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">⌘</span>
+    <span class="brand-name">Slides<span class="accent">→</span>PWA</span>
+  </div>
+  <div class="topbar-sub">Deck or brief in. Installable landing page out.</div>
+</header>
+
+<main class="layout">
+
+  <!-- LEFT: configuration -->
+  <section class="panel config-panel">
+
+    <div class="field-group">
+      <label class="field-label">01 — Your Anthropic API key</label>
+      <input id="apiKey" type="password" placeholder="sk-ant-..." autocomplete="off">
+      <div class="field-hint">
+        Stays in your browser (localStorage) and is sent only to your own local server, which forwards it straight to Anthropic. Never logged, never stored server-side.
+        <label class="checkbox-line"><input type="checkbox" id="rememberKey" checked> Remember on this device</label>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">02 — Source</label>
+      <div class="source-tabs">
+        <button class="tab-btn active" data-source="pptx">PPTX file</button>
+        <button class="tab-btn" data-source="text">Text / instructions</button>
+      </div>
+
+      <div id="source-pptx" class="source-pane active">
+        <label class="dropzone" for="pptxInput">
+          <span id="dropzoneLabel">Drop a .pptx file here, or click to browse</span>
+          <input id="pptxInput" type="file" accept=".pptx" hidden>
+        </label>
+        <div class="field-hint" id="pptxStatus"></div>
+      </div>
+
+      <div id="source-text" class="source-pane">
+        <textarea id="rawText" rows="6" placeholder="Paste a brief, an outline, or raw instructions. e.g. 'Landing page for a rock-climbing gym called Ascent. Sections: hero pitch, class schedule, membership tiers, contact.'"></textarea>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">03 — Template</label>
+      <select id="templateSelect">
+        <option value="blank">Blank — let Claude decide a fitting design</option>
+        <option value="minimal">Minimal / editorial</option>
+        <option value="bold">Bold / high-contrast</option>
+        <option value="playful">Playful / warm</option>
+        <option value="dark">Dark, product-y</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">04 — Extra direction <span class="optional">(optional)</span></label>
+      <textarea id="brandInput" rows="2" placeholder="Brand name, tone, colors, must-include CTA, anything else..."></textarea>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">05 — Model</label>
+      <select id="modelSelect">
+        <option value="claude-sonnet-5">Claude Sonnet 5 (recommended)</option>
+        <option value="claude-opus-4-8">Claude Opus 4.8 (highest quality, slower/costlier)</option>
+        <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (fastest/cheapest)</option>
+      </select>
+    </div>
+
+  </section>
+
+  <!-- MIDDLE: slides -->
+  <section class="panel slides-panel">
+    <div class="panel-header">
+      <label class="field-label">06 — Sections</label>
+      <button id="addSlideBtn" class="btn-add" type="button">+ Add section</button>
+    </div>
+    <div id="slidesList" class="slides-list"></div>
+    <button id="generateBtn" class="btn-primary" type="button">Generate landing page</button>
+    <div id="generateStatus" class="field-hint"></div>
+  </section>
+
+  <!-- RIGHT: preview -->
+  <section class="panel preview-panel">
+    <div class="panel-header">
+      <label class="field-label">Preview</label>
+      <div class="preview-actions">
+        <button id="downloadBtn" class="btn-secondary" type="button" disabled>Download PWA (.zip)</button>
+      </div>
+    </div>
+    <div class="preview-frame-wrap">
+      <iframe id="previewFrame" title="Generated landing page preview"></iframe>
+      <div id="previewEmpty" class="preview-empty">Your generated page will render here.</div>
+    </div>
+  </section>
+
+</main>
+
+<template id="slideTemplate">
+  <div class="slide-card">
+    <div class="slide-card-head">
+      <span class="slide-index"></span>
+      <button class="slide-remove" type="button" title="Remove section">✕</button>
+    </div>
+    <input class="slide-title" type="text" placeholder="Section title (e.g. Hero, Pricing, Contact)">
+    <textarea class="slide-content" rows="4" placeholder="Content or talking points for this section. Leave blank and I'll infer something reasonable."></textarea>
+  </div>
+</template>
+
+<script src="app.js"></script>
+</body>
+</html>
